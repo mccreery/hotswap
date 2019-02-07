@@ -1,0 +1,7 @@
+[{
+    "modid": "invrotate",
+    "name": "Inventory Rotate",
+    "description": "Quickly rotate between different rows in your inventory with a single keypress.",
+    "version": "${modVersion}",
+    "mcversion": "${mcVersion}"
+}]
