@@ -15,27 +15,36 @@ import net.minecraftforge.fml.relauncher.Side;
 
 @EventBusSubscriber(modid=InventoryRotate.MODID, value={Side.CLIENT})
 public enum RotateDirection {
-    UP(-9, new KeyBinding("key.invrotate.rotateUp", Keyboard.KEY_K, "key.categories.misc")),
-    DOWN(9, new KeyBinding("key.invrotate.rotateDown", Keyboard.KEY_J, "key.categories.misc"));
+    UP(-1, new KeyBinding("key.invrotate.rotateUp", Keyboard.KEY_K, "key.categories.misc"), new KeyBinding("key.invrotate.rotateRowUp", Keyboard.KEY_L, "key.categories.misc")),
+    DOWN(1, new KeyBinding("key.invrotate.rotateDown", Keyboard.KEY_J, "key.categories.misc"), new KeyBinding("key.invrotate.rotateRowDown", Keyboard.KEY_H, "key.categories.misc"));
 
-    private final int offset;
-    private final KeyBinding keyBinding;
+    private final int rowOffset;
+    private final KeyBinding keyBinding, keyBindingRow;
 
-    private RotateDirection(int offset, KeyBinding keyBinding) {
-        this.offset = offset;
+    private RotateDirection(int offset, KeyBinding keyBinding, KeyBinding keyBindingRow) {
+        this.rowOffset = offset;
         this.keyBinding = keyBinding;
+        this.keyBindingRow = keyBindingRow;
     }
 
     public void rotate(InventoryPlayer inventory, boolean wholeRow) {
-        Collections.rotate(inventory.mainInventory, offset);
+        if(wholeRow) {
+            Collections.rotate(inventory.mainInventory, rowOffset * 9);
+        } else {
+            Collections.rotate(new NthSubList<>(inventory.mainInventory, inventory.currentItem, 9), rowOffset);
+        }
+    }
+
+    private void rotate(boolean wholeRow) {
+        rotate(Minecraft.getMinecraft().player.inventory, wholeRow);
+        InventoryRotate.NET_WRAPPER.sendToServer(new RotateMessage(this, wholeRow));
     }
 
     private void onKeyInput() {
-        if(keyBinding.isPressed()) {
-            boolean wholeRow = false;
-
-            rotate(Minecraft.getMinecraft().player.inventory, wholeRow);
-            InventoryRotate.NET_WRAPPER.sendToServer(new RotateMessage(this, wholeRow));
+        if(keyBindingRow.isPressed()) {
+            rotate(true);
+        } else if(keyBinding.isPressed()) {
+            rotate(false);
         }
     }
 
@@ -51,6 +60,7 @@ public enum RotateDirection {
     public static void registerKeyBindings() {
         for(RotateDirection direction : values()) {
             ClientRegistry.registerKeyBinding(direction.keyBinding);
+            ClientRegistry.registerKeyBinding(direction.keyBindingRow);
         }
     }
 }

@@ -1,2 +1,5 @@
 key.invrotate.rotateUp=Rotate Up
 key.invrotate.rotateDown=Rotate Down
+
+key.invrotate.rotateRowUp=Rotate Row Up
+key.invrotate.rotateRowDown=Rotate Row Down
