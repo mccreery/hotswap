@@ -1,4 +1,4 @@
-package jobicade.invrotate;
+package jobicade.hotswap;
 
 import io.netty.buffer.ByteBuf;
 import net.minecraft.network.PacketBuffer;

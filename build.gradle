@@ -20,8 +20,8 @@ ext {
 }
 
 // JAR filenames and Maven coordinates
-archivesBaseName = 'invrotate'
-group = 'jobicade.invrotate'
+archivesBaseName = 'hotswap'
+group = 'jobicade.hotswap'
 version = "${project.ext.mcVersion}-${project.ext.modVersion}"
 
 minecraft {

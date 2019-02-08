@@ -1,4 +1,4 @@
-package jobicade.invrotate;
+package jobicade.hotswap;
 
 import java.util.Collections;
 
@@ -15,10 +15,10 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.InputEvent.KeyInputEvent;
 import net.minecraftforge.fml.relauncher.Side;
 
-@EventBusSubscriber(modid=InventoryRotate.MODID, value={Side.CLIENT})
+@EventBusSubscriber(modid=HotSwap.MODID, value={Side.CLIENT})
 public enum RotateDirection {
-    UP(-1, new KeyBinding("key.invrotate.rotateUp", Keyboard.KEY_K, "key.categories.misc"), new KeyBinding("key.invrotate.rotateRowUp", Keyboard.KEY_L, "key.categories.misc")),
-    DOWN(1, new KeyBinding("key.invrotate.rotateDown", Keyboard.KEY_J, "key.categories.misc"), new KeyBinding("key.invrotate.rotateRowDown", Keyboard.KEY_H, "key.categories.misc"));
+    UP(-1, new KeyBinding("key.hotswap.rotateUp", Keyboard.KEY_K, "key.categories.misc"), new KeyBinding("key.hotswap.rotateRowUp", Keyboard.KEY_L, "key.categories.misc")),
+    DOWN(1, new KeyBinding("key.hotswap.rotateDown", Keyboard.KEY_J, "key.categories.misc"), new KeyBinding("key.hotswap.rotateRowDown", Keyboard.KEY_H, "key.categories.misc"));
 
     private final int rowOffset;
     private final KeyBinding keyBinding, keyBindingRow;
@@ -46,7 +46,7 @@ public enum RotateDirection {
 
     private void rotate(boolean wholeRow) {
         rotate(Minecraft.getMinecraft().player, wholeRow);
-        InventoryRotate.NET_WRAPPER.sendToServer(new RotateMessage(this, wholeRow));
+        HotSwap.NET_WRAPPER.sendToServer(new RotateMessage(this, wholeRow));
     }
 
     private void onKeyInput() {

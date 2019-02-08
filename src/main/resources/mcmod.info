@@ -1,7 +1,7 @@
 [{
-    "modid": "invrotate",
-    "name": "Inventory Rotate",
-    "description": "Quickly rotate between different rows in your inventory with a single keypress.",
+    "modid": "hotswap",
+    "name": "HotSwap",
+    "description": "Quickly switch out hotbars from your inventory with a single keypress or mouse.",
     "version": "${modVersion}",
     "mcversion": "${mcVersion}"
 }]
