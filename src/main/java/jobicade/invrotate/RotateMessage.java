@@ -41,8 +41,7 @@ public class RotateMessage implements IMessage {
         PacketBuffer packetBuf = buf instanceof PacketBuffer ?
             (PacketBuffer)buf : new PacketBuffer(buf);
 
-        packetBuf.writeVarInt(5);
-        //packetBuf.writeEnumValue(direction);
+        packetBuf.writeEnumValue(direction);
         packetBuf.writeBoolean(wholeRow);
     }
 
