@@ -10,7 +10,8 @@ import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 import net.minecraftforge.fml.common.network.simpleimpl.SimpleNetworkWrapper;
 import net.minecraftforge.fml.relauncher.Side;
 
-@Mod(modid=InventoryRotate.MODID, name="Inventory Rotate", version="0.1")
+@Mod(modid=InventoryRotate.MODID, name="Inventory Rotate", version="0.1",
+    dependencies="required-after:forge@[12.18.1.2092,)") // minimum Forge/upper bound: EventBusSubscriber
 public class InventoryRotate {
     public static final String MODID = "invrotate";
     public static final SimpleNetworkWrapper NET_WRAPPER = NetworkRegistry.INSTANCE.newSimpleChannel(MODID);
