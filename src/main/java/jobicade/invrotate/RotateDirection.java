@@ -5,8 +5,10 @@ import java.util.Collections;
 import org.lwjgl.input.Keyboard;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.settings.KeyBinding;
-import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraftforge.client.event.MouseEvent;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -27,16 +29,23 @@ public enum RotateDirection {
         this.keyBindingRow = keyBindingRow;
     }
 
-    public void rotate(InventoryPlayer inventory, boolean wholeRow) {
-        if(wholeRow) {
-            Collections.rotate(inventory.mainInventory, rowOffset * 9);
-        } else {
-            Collections.rotate(new NthSubList<>(inventory.mainInventory, inventory.currentItem, 9), rowOffset);
+    public void rotate(EntityPlayer player, boolean wholeRow) {
+        if(!player.isSpectator()) {
+            if(wholeRow) {
+                Collections.rotate(player.inventory.mainInventory, rowOffset * 9);
+
+                for(int i = 0; i < 9; i++) {
+                    player.inventory.getStackInSlot(i).setAnimationsToGo(5);
+                }
+            } else {
+                Collections.rotate(new NthSubList<>(player.inventory.mainInventory, player.inventory.currentItem, 9), rowOffset);
+                player.inventory.getCurrentItem().setAnimationsToGo(5);
+            }
         }
     }
 
     private void rotate(boolean wholeRow) {
-        rotate(Minecraft.getMinecraft().player.inventory, wholeRow);
+        rotate(Minecraft.getMinecraft().player, wholeRow);
         InventoryRotate.NET_WRAPPER.sendToServer(new RotateMessage(this, wholeRow));
     }
 
@@ -54,6 +63,14 @@ public enum RotateDirection {
             for(RotateDirection direction : values()) {
                 direction.onKeyInput();
             }
+        }
+    }
+
+    @SubscribeEvent
+    public static void onMouseInput(MouseEvent event) {
+        if(event.isCancelable() && !Minecraft.getMinecraft().player.isSpectator() && GuiScreen.isAltKeyDown() && event.getDwheel() != 0) {
+            (event.getDwheel() > 0 ? UP : DOWN).rotate(GuiScreen.isCtrlKeyDown());
+            event.setCanceled(true);
         }
     }
 

@@ -24,7 +24,7 @@ public class InventoryRotate {
     private static IMessage onRotateServer(RotateMessage message, MessageContext context) {
         if(message.isValid()) {
             EntityPlayerMP player = context.getServerHandler().player;
-            message.getDirection().rotate(player.inventory, message.isWholeRow());
+            message.getDirection().rotate(player, message.isWholeRow());
         }
         return null;
     }
