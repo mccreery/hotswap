@@ -20,7 +20,7 @@ public class NthSubList<T> extends AbstractList<T> {
      * @throws IllegalArgumentException If {@code offset} is negative
      */
     public NthSubList(List<T> source, int offset, int step) {
-        if(offset < 0 || offset >= source.size()) {
+        if(offset < 0) {
             throw new IllegalArgumentException("Offset must not be negative");
         }
         this.source = source;
@@ -40,6 +40,6 @@ public class NthSubList<T> extends AbstractList<T> {
 
     @Override
     public int size() {
-        return Math.max(0, (source.size() - offset) / step);
+        return Math.max(0, (source.size() - offset + step - 1) / step);
     }
 }
