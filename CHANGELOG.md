@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 ### Fixed
 - Crash on dedicated server when player switches (#2)
+- Inventory Tweaks no longer auto-refills slots emptied by switching
 
 ## [0.1] - 2019-02-08
 ### Added

@@ -8,6 +8,7 @@ import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.client.event.MouseEvent;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.InputEvent.KeyInputEvent;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
@@ -19,9 +20,16 @@ public final class ClientProxy extends HotSwapProxy {
     private final KeyBinding ROW_UP = new KeyBinding("key.hotswap.rotateRowUp", Keyboard.KEY_L, "key.categories.misc");
     private final KeyBinding ROW_DOWN = new KeyBinding("key.hotswap.rotateRowDown", Keyboard.KEY_H, "key.categories.misc");
 
+    private InvTweaksSuppressor suppressor;
+
     @Override
     public void init() {
         MinecraftForge.EVENT_BUS.register(this);
+
+        if(Loader.isModLoaded("inventorytweaks")) {
+            suppressor = new InvTweaksSuppressor();
+            suppressor.init();
+        }
     }
 
     @Override
@@ -29,6 +37,7 @@ public final class ClientProxy extends HotSwapProxy {
         EntityPlayer player = Minecraft.getMinecraft().player;
 
         if(!player.isSpectator()) {
+            trySuppressInvTweaks();
             rotate(player, rows, wholeRow);
             HotSwap.NET_WRAPPER.sendToServer(new RotateMessage(rows, wholeRow));
         }
@@ -37,6 +46,13 @@ public final class ClientProxy extends HotSwapProxy {
     @Override
     public IMessage onRotateServer(RotateMessage message, MessageContext context) {
         return null;
+    }
+
+    @Override
+    public void trySuppressInvTweaks() {
+        if(suppressor != null) {
+            suppressor.suppressInvTweaks();
+        }
     }
 
     @SubscribeEvent

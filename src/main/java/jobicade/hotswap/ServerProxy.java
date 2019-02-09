@@ -19,4 +19,7 @@ public final class ServerProxy extends HotSwapProxy {
         }
         return null;
     }
+
+    @Override
+    public void trySuppressInvTweaks() {}
 }

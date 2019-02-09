@@ -10,6 +10,7 @@ public abstract class HotSwapProxy {
     public abstract void init();
     public abstract void rotateAndNotify(int rows, boolean wholeRow);
     public abstract IMessage onRotateServer(RotateMessage message, MessageContext context);
+    public abstract void trySuppressInvTweaks();
 
     protected static final void rotate(EntityPlayer player, int rows, boolean wholeRow) {
         if(!player.isSpectator()) {
