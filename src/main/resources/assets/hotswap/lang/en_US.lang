@@ -1,5 +1,7 @@
-key.hotswap.rotateUp=Rotate Up
-key.hotswap.rotateDown=Rotate Down
+key.categories.hotswap=HotSwap
 
-key.hotswap.rotateRowUp=Rotate Row Up
-key.hotswap.rotateRowDown=Rotate Row Down
+key.hotswap.rotateUp=Cycle Current Slot Up
+key.hotswap.rotateDown=Cycle Current Slot Down
+
+key.hotswap.rotateRowUp=Cycle Hotbar Up
+key.hotswap.rotateRowDown=Cycle Hotbar Down
