@@ -8,3 +8,10 @@ This is a small, simple mod for Minecraft (Forge) which adds hotkeys and mouse c
 - `H` and `L`: cycle the whole row down and up, respectively (configurable)
 - `Alt+MWheel`: cycle the current slot
 - `Ctrl+Alt+MWheel`: cycle the whole row
+
+## Development
+Setting up the workspace is a little different from usual. Forge usually checks for access transformers (ATs) from dependencies before actually running the task which extracts them (MinecraftForge/ForgeGradle#312). To correctly apply the ATs, run:
+```
+./gradlew extractDependencyATs
+```
+before the usual `./gradlew setupDecompWorkspace`.

@@ -8,6 +8,10 @@ buildscript {
     }
 }
 
+repositories {
+    maven { url = 'https://minecraft.curseforge.com/api/maven' }
+}
+
 apply plugin: 'net.minecraftforge.gradle.forge'
 sourceCompatibility = targetCompatibility = JavaVersion.VERSION_1_8
 
@@ -28,6 +32,11 @@ minecraft {
     version = "${project.ext.mcVersion}-${project.ext.forgeVersion}"
     mappings = project.ext.mcpMappings
     runDir = 'run'
+    useDepAts = true
+}
+
+dependencies {
+    provided "inventory-tweaks:InventoryTweaks:1.63:deobf"
 }
 
 processResources {
@@ -53,3 +62,30 @@ task deobfJar(type: Jar, dependsOn: classes) {
     from sourceSets.main.output
 }
 build.dependsOn deobfJar
+
+// Extract ATs from anywhere in dependency jars (for InvTweaks)
+task extractAllDependencyATs(type: Copy) {
+    includeEmptyDirs = false
+
+    configurations.provided.each {
+        def jarBasename = basename(it.name)
+
+        from zipTree(it).matching {
+            include '**/*_at.cfg'
+        }
+        eachFile {path = "${name}_${jarBasename}_at.cfg"}
+    }
+    into "$buildDir/depAts"
+}
+
+/*
+ * This is pretty useless as ForgeGradle seems to search for ATs
+ * before any tasks can run. To get the correct result, run this task
+ * in its own command, then setupDecompWorkspace
+ */
+extractDependencyATs.dependsOn extractAllDependencyATs
+
+def basename(name) {
+    def i = name.lastIndexOf('.')
+    i != -1 ? name.substring(0, i) : name
+}
