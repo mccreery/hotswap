@@ -46,3 +46,10 @@ processResources {
         exclude 'mcmod.info'
     }
 }
+
+// Generate deobf jar
+task deobfJar(type: Jar, dependsOn: classes) {
+    classifier = 'dev'
+    from sourceSets.main.output
+}
+build.dependsOn deobfJar
