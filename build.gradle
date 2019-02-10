@@ -36,7 +36,8 @@ minecraft {
 }
 
 dependencies {
-    provided "inventory-tweaks:InventoryTweaks:1.63:deobf"
+    provided 'inventory-tweaks:InventoryTweaks:1.63:deobf'
+    testCompile 'junit:junit:4.12'
 }
 
 processResources {
@@ -88,4 +89,14 @@ extractDependencyATs.dependsOn extractAllDependencyATs
 def basename(name) {
     def i = name.lastIndexOf('.')
     i != -1 ? name.substring(0, i) : name
+}
+
+// Move tests into separate bin folder and mark them
+eclipse.classpath.file.whenMerged {classpath ->
+    entries.each {entry ->
+        if(entry instanceof org.gradle.plugins.ide.eclipse.model.SourceFolder && sourceSets.test.java.srcDirs.contains(entry.dir)) {
+            entry.entryAttributes['test'] = 'true'
+            entry.output = 'bin-test'
+        }
+    }
 }

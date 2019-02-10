@@ -5,3 +5,5 @@ bin/
 build/
 .classpath
 .project
+*.launch
+bin-test/
