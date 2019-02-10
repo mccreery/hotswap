@@ -10,7 +10,7 @@ This is a small, simple mod for Minecraft (Forge) which adds hotkeys and mouse c
 - `Ctrl+Alt+MWheel`: cycle the whole row
 
 ## Development
-Setting up the workspace is a little different from usual. Forge usually checks for access transformers (ATs) from dependencies before actually running the task which extracts them (MinecraftForge/ForgeGradle#312). To correctly apply the ATs, run:
+Setting up the workspace is a little different from usual. Forge usually checks for access transformers (ATs) from dependencies before actually running the task which extracts them ([MinecraftForge/ForgeGradle#312](https://github.com/MinecraftForge/ForgeGradle/issues/312)). To correctly apply the ATs, run:
 ```
 ./gradlew extractDependencyATs
 ```
