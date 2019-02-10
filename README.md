@@ -15,3 +15,9 @@ Setting up the workspace is a little different from usual. Forge usually checks 
 ./gradlew extractDependencyATs
 ```
 before the usual `./gradlew setupDecompWorkspace`.
+
+### Tests
+In some testing environments (such as VS Code Java), tests won't show up unless the Eclipse classpath has an attribute which isn't usually added. Regenerating the `.classpath` file should fix this problem:
+```
+rm -f .classpath && ./gradlew eclipse
+```
