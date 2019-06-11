@@ -13,7 +13,7 @@ import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.InputEvent.KeyInputEvent;
 
-public final class ClientProxy implements CommonProxy {
+public final class ClientProxy extends CommonProxy {
     private final KeyBinding CURRENT_UP = new KeyBinding("key.hotswap.rotateUp", Keyboard.KEY_K, "key.categories.hotswap");
     private final KeyBinding CURRENT_DOWN = new KeyBinding("key.hotswap.rotateDown", Keyboard.KEY_J, "key.categories.hotswap");
     private final KeyBinding ROW_UP = new KeyBinding("key.hotswap.rotateRowUp", Keyboard.KEY_L, "key.categories.hotswap");
@@ -37,13 +37,6 @@ public final class ClientProxy implements CommonProxy {
     }
 
     @Override
-    public void trySuppressInvTweaks() {
-        if(suppressor != null) {
-            suppressor.suppressInvTweaks();
-        }
-    }
-
-    @Override
     public void rotate(int rows, boolean wholeRow) {
         EntityPlayer player = Minecraft.getMinecraft().player;
 
@@ -51,6 +44,12 @@ public final class ClientProxy implements CommonProxy {
             trySuppressInvTweaks();
             HotSwap.rotateLocal(player, rows, wholeRow);
             HotSwap.NET_WRAPPER.sendToServer(new RotateMessage(rows, wholeRow));
+        }
+    }
+
+    private void trySuppressInvTweaks() {
+        if(suppressor != null) {
+            suppressor.suppressInvTweaks();
         }
     }
 

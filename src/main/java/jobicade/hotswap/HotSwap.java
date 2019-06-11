@@ -21,7 +21,7 @@ public class HotSwap {
     public static final String MODID = "hotswap";
     public static final SimpleNetworkWrapper NET_WRAPPER = NetworkRegistry.INSTANCE.newSimpleChannel(MODID);
 
-    @SidedProxy(clientSide="jobicade.hotswap.ClientProxy", serverSide="jobicade.hotswap.CommonProxy.ProxyStub")
+    @SidedProxy(clientSide="jobicade.hotswap.ClientProxy", serverSide="jobicade.hotswap.CommonProxy")
     private static CommonProxy proxy;
 
     @EventHandler
