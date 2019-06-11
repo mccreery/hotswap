@@ -40,10 +40,19 @@ public final class ClientProxy extends CommonProxy {
     public void rotate(int rows, boolean wholeRow) {
         EntityPlayer player = Minecraft.getMinecraft().player;
 
-        if(!player.isSpectator()) {
-            trySuppressInvTweaks();
-            HotSwap.rotateLocal(player, rows, wholeRow);
+        trySuppressInvTweaks();
+        if(HotSwap.rotateLocal(player, rows, wholeRow)) {
             HotSwap.NET_WRAPPER.sendToServer(new RotateMessage(rows, wholeRow));
+        }
+    }
+
+    @Override
+    public void swap(int slot) {
+        EntityPlayer player = Minecraft.getMinecraft().player;
+
+        trySuppressInvTweaks();
+        if(HotSwap.swapLocal(player, slot)) {
+            HotSwap.NET_WRAPPER.sendToServer(new SwapMessage(slot));
         }
     }
 
@@ -64,6 +73,16 @@ public final class ClientProxy extends CommonProxy {
                 rotate(-1, false);
             } else if(CURRENT_DOWN.isPressed()) {
                 rotate(1, false);
+            }
+
+            if(GuiScreen.isAltKeyDown()) {
+                KeyBinding[] keyBindsHotbar = Minecraft.getMinecraft().gameSettings.keyBindsHotbar;
+
+                for(int i = 0; i < keyBindsHotbar.length; i++) {
+                    if(keyBindsHotbar[i].isPressed()) {
+                        swap(i);
+                    }
+                }
             }
         }
     }

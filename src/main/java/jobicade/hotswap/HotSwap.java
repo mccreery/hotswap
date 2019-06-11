@@ -27,6 +27,7 @@ public class HotSwap {
     @EventHandler
     public void init(FMLInitializationEvent event) {
         NET_WRAPPER.registerMessage(HotSwap::onRotateServer, RotateMessage.class, 0, Side.SERVER);
+        NET_WRAPPER.registerMessage(HotSwap::onSwapServer, SwapMessage.class, 1, Side.SERVER);
         proxy.init();
     }
 
@@ -57,8 +58,9 @@ public class HotSwap {
      * @param rows The number of rows to rotate: down is positive, up is negative.
      * @param wholeRow {@code true} to rotate all columns, or {@code false} to rotate
      * the column containing the selected hotbar slot only.
+     * @return {@code true} if a rotation occurred.
      */
-    public static void rotateLocal(EntityPlayer player, int rows, boolean wholeRow) {
+    public static boolean rotateLocal(EntityPlayer player, int rows, boolean wholeRow) {
         if(!player.isSpectator()) {
             if(wholeRow) {
                 Collections.rotate(player.inventory.mainInventory, rows * 9);
@@ -71,6 +73,48 @@ public class HotSwap {
                         player.inventory.currentItem, 9), rows);
                 player.inventory.getCurrentItem().setAnimationsToGo(5);
             }
+
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    /**
+     * Performs a swap on the player's inventory on the client and notifies the server.
+     * No operation if called on the server.
+     *
+     * @param slot The second slot.
+     */
+    public static void swap(int slot) {
+        proxy.swap(slot);
+    }
+
+    private static IMessage onSwapServer(SwapMessage message, MessageContext context) {
+        if(message.isValid()) {
+            EntityPlayerMP player = context.getServerHandler().player;
+            swapLocal(player, message.getSlot());
+        }
+        return null;
+    }
+
+    /**
+     * Performs a swap on a player's inventory on either side without sending any messages.
+     * The first slot is the player's selected hotbar slot.
+     *
+     * @param player The player to swap.
+     * @param slot The second slot.
+     * @return {@code true} if a swap occurred.
+     */
+    public static boolean swapLocal(EntityPlayer player, int slot) {
+        if(!player.isSpectator() && slot != player.inventory.currentItem) {
+            Collections.swap(player.inventory.mainInventory, player.inventory.currentItem, slot);
+            player.inventory.mainInventory.get(player.inventory.currentItem).setAnimationsToGo(5);
+            player.inventory.mainInventory.get(slot).setAnimationsToGo(5);
+
+            return true;
+        } else {
+            return false;
         }
     }
 }
