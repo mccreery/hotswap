@@ -21,7 +21,7 @@ public abstract class HotSwapProxy {
                     player.inventory.getStackInSlot(i).setAnimationsToGo(5);
                 }
             } else {
-                Collections.rotate(new NthSubList<>(player.inventory.mainInventory, player.inventory.currentItem, 9), rows);
+                Collections.rotate(new StepList<>(player.inventory.mainInventory, player.inventory.currentItem, 9), rows);
                 player.inventory.getCurrentItem().setAnimationsToGo(5);
             }
         }

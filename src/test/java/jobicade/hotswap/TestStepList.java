@@ -10,7 +10,7 @@ import org.junit.Test;
 
 import org.junit.Assert;
 
-public class TestNthList {
+public class TestStepList {
     private List<Integer> ints = new ArrayList<>();
 
     @Before
@@ -30,9 +30,9 @@ public class TestNthList {
     }
 
     private void testAccess(List<?> list, int offset, int step) {
-        NthSubList<?> steppedList = new NthSubList<>(list, offset, step);
+        StepList<?> steppedList = new StepList<>(list, offset, step);
 
-        for(int i = offset, j = 0; i < list.size(); i += step, j++) {
+        for(int i = offset, j = 0; i < list.size() && j < steppedList.size(); i += step, j++) {
             String message = String.format("size %d, step %d, access %d", list.size(), step, j);
             Assert.assertEquals(message, list.get(i), steppedList.get(j));
         }
@@ -44,17 +44,17 @@ public class TestNthList {
             int n = 0;
             for(int j = 0; j < i; j += 5) n++;
 
-            Assert.assertEquals(n, new NthSubList<>(ints.subList(0, i), 0, 5).size());
+            Assert.assertEquals(n, new StepList<>(ints.subList(0, i), 0, 5).size());
         }
     }
 
     @Test(expected=IllegalArgumentException.class)
     public void testNegativeOffset() {
-        new NthSubList<>(ints, -1, 1);
+        new StepList<>(ints, -1, 1);
     }
 
     @Test(expected=IllegalArgumentException.class)
     public void testZeroStep() {
-        new NthSubList<>(ints, 0, 0);
+        new StepList<>(ints, 0, 0);
     }
 }
