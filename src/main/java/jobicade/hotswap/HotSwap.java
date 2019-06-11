@@ -14,7 +14,7 @@ import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 import net.minecraftforge.fml.common.network.simpleimpl.SimpleNetworkWrapper;
 import net.minecraftforge.fml.relauncher.Side;
 
-@Mod(modid=HotSwap.MODID, name="HotSwap", version="0.2.1",
+@Mod(modid=HotSwap.MODID, name="HotSwap", version="0.3",
     acceptedMinecraftVersions="[1.11,1.13)",
     acceptableRemoteVersions="*")
 public class HotSwap {
