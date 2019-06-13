@@ -14,14 +14,14 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.InputEvent.KeyInputEvent;
 
 public final class ClientProxy extends CommonProxy {
-    private final KeyBinding CURRENT_UP = new RegisterOrderKeyBinding("key.hotswap.rotateUp", Keyboard.KEY_K, "key.categories.hotswap");
-    private final KeyBinding CURRENT_DOWN = new RegisterOrderKeyBinding("key.hotswap.rotateDown", Keyboard.KEY_J, "key.categories.hotswap");
-    private final KeyBinding ROW_UP = new RegisterOrderKeyBinding("key.hotswap.rotateRowUp", Keyboard.KEY_L, "key.categories.hotswap");
-    private final KeyBinding ROW_DOWN = new RegisterOrderKeyBinding("key.hotswap.rotateRowDown", Keyboard.KEY_H, "key.categories.hotswap");
+    private final KeyBinding currentUp = new RegisterOrderKeyBinding("key.hotswap.rotateUp", Keyboard.KEY_K, "key.categories.hotswap");
+    private final KeyBinding currentDown = new RegisterOrderKeyBinding("key.hotswap.rotateDown", Keyboard.KEY_J, "key.categories.hotswap");
+    private final KeyBinding rowUp = new RegisterOrderKeyBinding("key.hotswap.rotateRowUp", Keyboard.KEY_L, "key.categories.hotswap");
+    private final KeyBinding rowDown = new RegisterOrderKeyBinding("key.hotswap.rotateRowDown", Keyboard.KEY_H, "key.categories.hotswap");
 
-    private final ModifierKeyBinding CURRENT_SCROLL = new ModifierKeyBinding("key.hotswap.rotate", Keyboard.KEY_LMENU, "key.categories.hotswap", "hotswap.mouseWheel");
-    private final ModifierKeyBinding ROW_SCROLL = new ModifierKeyBinding("key.hotswap.rotateRow", KeyModifier.CONTROL, Keyboard.KEY_LMENU, "key.categories.hotswap", "hotswap.mouseWheel");
-    private final ModifierKeyBinding SWAP = new ModifierKeyBinding("key.hotswap.swap", Keyboard.KEY_LMENU, "key.categories.hotswap", "hotswap.slot");
+    private final ModifierKeyBinding currentScroll = new ModifierKeyBinding("key.hotswap.rotate", Keyboard.KEY_LMENU, "key.categories.hotswap", "hotswap.mouseWheel");
+    private final ModifierKeyBinding rowScroll = new ModifierKeyBinding("key.hotswap.rotateRow", KeyModifier.CONTROL, Keyboard.KEY_LMENU, "key.categories.hotswap", "hotswap.mouseWheel");
+    private final ModifierKeyBinding swap = new ModifierKeyBinding("key.hotswap.swap", Keyboard.KEY_LMENU, "key.categories.hotswap", "hotswap.slot");
 
     private InvTweaksSuppressor suppressor;
 
@@ -29,14 +29,14 @@ public final class ClientProxy extends CommonProxy {
     public void init() {
         MinecraftForge.EVENT_BUS.register(this);
 
-        ClientRegistry.registerKeyBinding(ROW_DOWN);
-        ClientRegistry.registerKeyBinding(CURRENT_DOWN);
-        ClientRegistry.registerKeyBinding(CURRENT_UP);
-        ClientRegistry.registerKeyBinding(ROW_UP);
+        ClientRegistry.registerKeyBinding(rowDown);
+        ClientRegistry.registerKeyBinding(currentDown);
+        ClientRegistry.registerKeyBinding(currentUp);
+        ClientRegistry.registerKeyBinding(rowUp);
 
-        ClientRegistry.registerKeyBinding(CURRENT_SCROLL);
-        ClientRegistry.registerKeyBinding(ROW_SCROLL);
-        ClientRegistry.registerKeyBinding(SWAP);
+        ClientRegistry.registerKeyBinding(currentScroll);
+        ClientRegistry.registerKeyBinding(rowScroll);
+        ClientRegistry.registerKeyBinding(swap);
 
         if(Loader.isModLoaded("inventorytweaks")) {
             suppressor = new InvTweaksSuppressor();
@@ -73,17 +73,17 @@ public final class ClientProxy extends CommonProxy {
     @SubscribeEvent
     public void onKeyInput(KeyInputEvent event) {
         if(Minecraft.getMinecraft().inGameHasFocus) {
-            if(ROW_UP.isPressed()) {
+            if(rowUp.isPressed()) {
                 rotate(-1, true);
-            } else if(ROW_DOWN.isPressed()) {
+            } else if(rowDown.isPressed()) {
                 rotate(1, true);
-            } else if(CURRENT_UP.isPressed()) {
+            } else if(currentUp.isPressed()) {
                 rotate(-1, false);
-            } else if(CURRENT_DOWN.isPressed()) {
+            } else if(currentDown.isPressed()) {
                 rotate(1, false);
             }
 
-            if(SWAP.isKeyDown()) {
+            if(swap.isKeyDown()) {
                 KeyBinding[] keyBindsHotbar = Minecraft.getMinecraft().gameSettings.keyBindsHotbar;
 
                 for(int i = 0; i < keyBindsHotbar.length; i++) {
@@ -98,7 +98,7 @@ public final class ClientProxy extends CommonProxy {
     @SubscribeEvent
     public void onMouseInput(MouseEvent event) {
         if(event.isCancelable() && !event.isCanceled() && event.getDwheel() != 0) {
-            if(ROW_SCROLL.overrides(CURRENT_SCROLL)) {
+            if(rowScroll.overrides(currentScroll)) {
                 if(!tryScrollRow(event)) {
                     tryScrollCurrent(event);
                 }
@@ -111,7 +111,7 @@ public final class ClientProxy extends CommonProxy {
     }
 
     private boolean tryScrollCurrent(MouseEvent event) {
-        if(CURRENT_SCROLL.isKeyDown()) {
+        if(currentScroll.isKeyDown()) {
             rotate(Integer.signum(event.getDwheel()), false);
             event.setCanceled(true);
             return true;
@@ -121,7 +121,7 @@ public final class ClientProxy extends CommonProxy {
     }
 
     private boolean tryScrollRow(MouseEvent event) {
-        if(ROW_SCROLL.isKeyDown()) {
+        if(rowScroll.isKeyDown()) {
             rotate(Integer.signum(event.getDwheel()), true);
             event.setCanceled(true);
             return true;
