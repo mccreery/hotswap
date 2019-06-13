@@ -55,7 +55,7 @@ public class ModifierKeyBinding extends RegisterOrderKeyBinding {
         if(modifier != null) {
             String tail = getLocalizedComboName(modifier, I18n.format(suffixKey));
             return getLocalizedComboName(getKeyModifier(), tail);
-        } else if(keyCode == Keyboard.KEY_NONE) {
+        } else if(getKeyCode() == Keyboard.KEY_NONE) {
             return super.getDisplayName();
         } else {
             return I18n.format("hotswap.plus", super.getDisplayName(), I18n.format(suffixKey));
@@ -68,7 +68,7 @@ public class ModifierKeyBinding extends RegisterOrderKeyBinding {
      */
     private KeyModifier getModifier() {
         for(KeyModifier modifier : KeyModifier.MODIFIER_VALUES) {
-            if(modifier.matches(keyCode)) {
+            if(modifier.matches(getKeyCode())) {
                 return modifier;
             }
         }
