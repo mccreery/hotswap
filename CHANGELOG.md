@@ -6,7 +6,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [0.3.2] - 2019-06-14
 ### Fixed
-- keyCode IllegalAccessError (#1, e05a4ad)
+- keyCode IllegalAccessError (#3, 7c40f1e)
 
 ## [0.3.1] - 2019-06-13
 ### Added
