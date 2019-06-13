@@ -14,10 +14,10 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.InputEvent.KeyInputEvent;
 
 public final class ClientProxy extends CommonProxy {
-    private final KeyBinding currentUp = new RegisterOrderKeyBinding("key.hotswap.rotateUp", Keyboard.KEY_K, "key.categories.hotswap");
-    private final KeyBinding currentDown = new RegisterOrderKeyBinding("key.hotswap.rotateDown", Keyboard.KEY_J, "key.categories.hotswap");
-    private final KeyBinding rowUp = new RegisterOrderKeyBinding("key.hotswap.rotateRowUp", Keyboard.KEY_L, "key.categories.hotswap");
     private final KeyBinding rowDown = new RegisterOrderKeyBinding("key.hotswap.rotateRowDown", Keyboard.KEY_H, "key.categories.hotswap");
+    private final KeyBinding currentDown = new RegisterOrderKeyBinding("key.hotswap.rotateDown", Keyboard.KEY_J, "key.categories.hotswap");
+    private final KeyBinding currentUp = new RegisterOrderKeyBinding("key.hotswap.rotateUp", Keyboard.KEY_K, "key.categories.hotswap");
+    private final KeyBinding rowUp = new RegisterOrderKeyBinding("key.hotswap.rotateRowUp", Keyboard.KEY_L, "key.categories.hotswap");
 
     private final ModifierKeyBinding currentScroll = new ModifierKeyBinding("key.hotswap.rotate", Keyboard.KEY_LMENU, "key.categories.hotswap", "hotswap.mouseWheel");
     private final ModifierKeyBinding rowScroll = new ModifierKeyBinding("key.hotswap.rotateRow", KeyModifier.CONTROL, Keyboard.KEY_LMENU, "key.categories.hotswap", "hotswap.mouseWheel");
